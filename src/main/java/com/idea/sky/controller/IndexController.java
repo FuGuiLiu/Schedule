@@ -13,20 +13,25 @@ import java.util.Arrays;
  * @author Administrator
  */
 @Controller
-public class TestController {
+public class IndexController {
 	@Resource
 	private CronTaskRegistrar cronTaskRegistrar;
 
-	@RequestMapping("/test")
+	@RequestMapping(value = {"/","/index","/index.html"})
 	public ModelAndView test() {
-		SchedulingRunnable task = new SchedulingRunnable("demoTask", "taskWithParams", "hello world");
-
-		cronTaskRegistrar.addCronTask(task, "0/1 * * * * ?");
+		// SchedulingRunnable task = new SchedulingRunnable("demoTask", "taskWithParams", "hello world");
+		//
+		// cronTaskRegistrar.addCronTask(task, "0/1 * * * * ?");
 
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.addObject("message", "你好,springBoot");
-		modelAndView.setViewName("test");
+		modelAndView.setViewName("index");
 		modelAndView.addObject("users", Arrays.asList("富贵", "sky"));
 		return modelAndView;
+	}
+	@RequestMapping(value = "/cancel")
+	public String cancel() {
+		cronTaskRegistrar.destroy();
+		return "index";
 	}
 }
