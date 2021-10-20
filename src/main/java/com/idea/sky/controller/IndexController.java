@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.idea.sky.entity.SystemJob;
 import com.idea.sky.service.SystemJobServiceImpl;
 import com.idea.sky.utils.CronTaskRegistrar;
+import com.idea.sky.utils.queryUtils.MergeQuery;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
