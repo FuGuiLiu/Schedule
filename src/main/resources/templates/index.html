@@ -12,7 +12,7 @@
         text-align: center;
     }
 
-    #tr_son_middle2 > td {
+    #body_data  td {
         text-align: center;
     }
 
@@ -21,10 +21,9 @@
     }
 </style>
 <body>
-<div class="ui top attached button">Button before grid</div>
+<div class="ui top blue attached button">定时任务管理</div>
 <h4 class="ui horizontal divider header">
-    <i class="bar coffee icon"></i>
-    Split
+    &nbsp;<i class="bar caret down icon"></i>
 </h4>
 
 <br/>
@@ -39,12 +38,6 @@
             <div class="results">
 
             </div>
-            <button class="ui secondary button right floated">
-                删除
-            </button>
-            <button class="ui button right floated">
-                修改
-            </button>
             <button class="ui primary button right floated">
                 新增
             </button>
@@ -55,7 +48,7 @@
         <table class="ui celled padded table">
             <thead>
             <tr id="tr_son_middle">
-                <th></th>
+                <th>操作</th>
                 <th class="single line">任务ID</th>
                 <th>Bean名称</th>
                 <th>方法名称</th>
@@ -70,10 +63,10 @@
             </tbody>
         </table>
     </div>
-
-    <div class="ui modal tiny">
+    <!--新增模态框-->
+    <div class="ui first coupled modal tiny">
         <i class="close icon"></i>
-        <div class="header">
+        <div class="header" id="div_header">
             新增任务
         </div>
         <br>
@@ -107,13 +100,15 @@
                     <label>状态</label>
                     <div class="field">
                         <div class="ui radio checkbox">
-                            <input type="radio" name="jobStatus" tabindex="0" class="hidden" value="1" id="ipt_for1">
+                            <input type="radio" name="jobStatus" tabindex="0" class="hidden" value="1"
+                                   id="ipt_for1">
                             <label for="ipt_for1">启动</label>
                         </div>
                     </div>
                     <div class="field">
                         <div class="ui radio checkbox">
-                            <input type="radio" name="jobStatus" tabindex="1" class="hidden" value="0" id="ipt_for2">
+                            <input type="radio" name="jobStatus" tabindex="1" class="hidden" value="0"
+                                   id="ipt_for2">
                             <label for="ipt_for2">暂停</label>
                         </div>
                     </div>
@@ -121,6 +116,10 @@
                 <div class="inline field">
                     <label>备注</label>
                     <textarea rows="3" style="width: 300px;" name="remark"></textarea>
+                </div>
+                <div class="inline field" style="display: none;">
+                    <label>隐藏域</label>
+                    <input type="text" name="id">
                 </div>
                 <button class="ui button" type="button" id="btn_reset" style="margin-right: 130px;">重置</button>
                 <button class="ui button primary" type="button" id="btn_submit">提交</button>
@@ -131,7 +130,7 @@
     </div>
 
     <!--提示弹框-->
-    <div class="ui small modal">
+    <div class="ui second coupled small modal">
         <div class="header">提示</div>
         <div class="content">
             <p></p>
@@ -139,6 +138,25 @@
         <div class="actions">
             <div class="ui black deny button">
                 确定
+            </div>
+        </div>
+    </div>
+    <!--是否删除提示层-->
+    <div class="ui basic modal">
+        <div class="ui icon header">
+            <i class="archive icon"></i>
+        </div>
+        <div class="content">
+            <p>是否删除该信息吗?</p>
+        </div>
+        <div class="actions">
+            <div class="ui red basic cancel inverted button">
+                <i class="remove icon"></i>
+                No
+            </div>
+            <div class="ui green ok inverted button">
+                <i class="checkmark icon"></i>
+                Yes
             </div>
         </div>
     </div>

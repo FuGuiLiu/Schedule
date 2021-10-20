@@ -111,4 +111,53 @@ public class IndexController {
 
 		return "";
 	}
+
+	@RequestMapping(value = "/delete")
+	@ResponseBody
+	public Object delete(String id) {
+		HashMap<String, Object> resultMap = new HashMap();
+		try {
+			int i = systemJobService.deleteByPrimaryKey(Long.valueOf(id));
+			if (i == 0) {
+				resultMap.put("errorMsg", "删除失败,请联系管理员");
+			} else {
+				resultMap.put("success", "删除成功");
+				return JSON.toJSON(resultMap);
+			}
+
+		} catch (Exception e) {
+			resultMap.put("errorMsg", e.getMessage());
+		}
+
+		return "";
+	}
+
+	@RequestMapping(value = "/update")
+	@ResponseBody
+	public Object update(SystemJob systemJob) {
+
+		// 校验正则表达式是否正确
+		String regEx = "^\\s*($|#|\\w+\\s*=|(\\?|\\*|(?:[0-5]?\\d)(?:(?:-|\\/|\\,)(?:[0-5]?\\d))?(?:,(?:[0-5]?\\d)(?:(?:-|\\/|\\,)(?:[0-5]?\\d))?)*)\\s+(\\?|\\*|(?:[0-5]?\\d)(?:(?:-|\\/|\\,)(?:[0-5]?\\d))?(?:,(?:[0-5]?\\d)(?:(?:-|\\/|\\,)(?:[0-5]?\\d))?)*)\\s+(\\?|\\*|(?:[01]?\\d|2[0-3])(?:(?:-|\\/|\\,)(?:[01]?\\d|2[0-3]))?(?:,(?:[01]?\\d|2[0-3])(?:(?:-|\\/|\\,)(?:[01]?\\d|2[0-3]))?)*)\\s+(\\?|\\*|(?:0?[1-9]|[12]\\d|3[01])(?:(?:-|\\/|\\,)(?:0?[1-9]|[12]\\d|3[01]))?(?:,(?:0?[1-9]|[12]\\d|3[01])(?:(?:-|\\/|\\,)(?:0?[1-9]|[12]\\d|3[01]))?)*)\\s+(\\?|\\*|(?:[1-9]|1[012])(?:(?:-|\\/|\\,)(?:[1-9]|1[012]))?(?:L|W)?(?:,(?:[1-9]|1[012])(?:(?:-|\\/|\\,)(?:[1-9]|1[012]))?(?:L|W)?)*|\\?|\\*|(?:JAN|FEB|MAR|APR|MAY|JUN|JUL|AUG|SEP|OCT|NOV|DEC)(?:(?:-)(?:JAN|FEB|MAR|APR|MAY|JUN|JUL|AUG|SEP|OCT|NOV|DEC))?(?:,(?:JAN|FEB|MAR|APR|MAY|JUN|JUL|AUG|SEP|OCT|NOV|DEC)(?:(?:-)(?:JAN|FEB|MAR|APR|MAY|JUN|JUL|AUG|SEP|OCT|NOV|DEC))?)*)\\s+(\\?|\\*|(?:[0-6])(?:(?:-|\\/|\\,|#)(?:[0-6]))?(?:L)?(?:,(?:[0-6])(?:(?:-|\\/|\\,|#)(?:[0-6]))?(?:L)?)*|\\?|\\*|(?:MON|TUE|WED|THU|FRI|SAT|SUN)(?:(?:-)(?:MON|TUE|WED|THU|FRI|SAT|SUN))?(?:,(?:MON|TUE|WED|THU|FRI|SAT|SUN)(?:(?:-)(?:MON|TUE|WED|THU|FRI|SAT|SUN))?)*)(|\\s)+(\\?|\\*|(?:|\\d{4})(?:(?:-|\\/|\\,)(?:|\\d{4}))?(?:,(?:|\\d{4})(?:(?:-|\\/|\\,)(?:|\\d{4}))?)*))$";
+
+		HashMap<String, Object> resultMap = new HashMap();
+		if (!systemJob.getCronExpression().matches(regEx)) {
+			resultMap.put("errorMsg", "cron表达式语法错误!");
+			return resultMap;
+		}
+
+		try {
+			int i = systemJobService.updateByPrimaryKeySelective(systemJob);
+			if (i == 0) {
+				resultMap.put("errorMsg", "修改失败,请联系管理员");
+			} else {
+				resultMap.put("success", "修改成功");
+				return JSON.toJSON(resultMap);
+			}
+
+		} catch (Exception e) {
+			resultMap.put("errorMsg", e.getMessage());
+		}
+
+		return "";
+	}
 }
