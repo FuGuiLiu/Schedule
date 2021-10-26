@@ -147,4 +147,10 @@
     from schedule.system_job
   </select>
 
+  <select id="queryActivedJob" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from schedule.system_job
+    where job_status=1
+    </select>
 </mapper>

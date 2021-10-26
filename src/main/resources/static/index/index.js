@@ -16,9 +16,9 @@ $(function () {
                     // 移除所以数据
                     $("#body_data").empty();
                     if (result.jobStatus) {
-                        var tempHtml = "<input type=\"checkbox\" name=\"public\" checked>";
+                        var tempHtml = "<input type=\"checkbox\" name=\"public\" value='" + result.id + "' checked>";
                     } else {
-                        var tempHtml = "<input type=\"checkbox\" name=\"public\" uncheck>";
+                        var tempHtml = "<input type=\"checkbox\" name=\"public\" value='" + result.id + "' uncheck>";
                     }
                     var html = "<tr><td>\n" +
                         "                    <h2 class=\"ui center aligned header\">" +
@@ -172,11 +172,12 @@ $(function () {
                 .closest('.message')
                 .transition('fade')
             ;
-        })
-    ;
+        });
 });
 
-// 查询所有数据
+/**
+ * 查询所有数据
+ */
 function getAllData() {
     $.ajax({
         url: "/getAllData",
@@ -187,9 +188,9 @@ function getAllData() {
             var html = "";
             $.each(result, function (index, value) {
                 if (value.jobStatus) {
-                    var tempHtml = "<input type=\"checkbox\" name=\"public\" checked>";
+                    var tempHtml = "<input type=\"checkbox\" name=\"public\" value='" + value.id + "' checked>";
                 } else {
-                    var tempHtml = "<input type=\"checkbox\" name=\"public\" uncheck>";
+                    var tempHtml = "<input type=\"checkbox\" name=\"public\" value='" + value.id + "' uncheck>";
                 }
                 var paragraph = "<tr><td>\n" +
                     "                    <h2 class=\"ui center aligned header\">" +
@@ -216,9 +217,13 @@ function getAllData() {
             $("#body_data").append(html);
         }
     });
+    checkboxListener();
 }
 
-// 查询所有Bean名称
+/**
+ * 查询所有Bean名称
+ * @returns {null}
+ */
 function getAllBeanName() {
     var content = null;
     $.ajax({
@@ -231,7 +236,10 @@ function getAllBeanName() {
     return content;
 }
 
-// 修改
+/**
+ * 修改
+ * @param id
+ */
 function update(id) {
     $('.ui.first.coupled.modal.tiny')
         .modal({
@@ -251,6 +259,7 @@ function update(id) {
                         $("[name='beanName']").val(result.beanName);
                         $("[name='methodName']").val(result.methodName);
                         $("[name='cronExpression']").val(result.cronExpression);
+                        $("[name='methodParams']").val(result.methodParams);
                         if (result.jobStatus) {
                             $("#ipt_for1").attr("checked", "checked");
                             $("#ipt_for2").removeAttr("checked");
@@ -267,8 +276,12 @@ function update(id) {
     ;
 }
 
-// 删除
+/**
+ * 删除
+ * @param id
+ */
 function deleteData(id) {
+    $("#p_dynamic_sentence").text("是否删除该信息吗?");
     $(".ui.basic.modal").modal({
         closable: false,
         onApprove: function () {
@@ -303,3 +316,33 @@ function deleteData(id) {
     }).modal('show');
 }
 
+/*状态改变*/
+function statusChange(id) {
+
+    $.post("/statusChange", {id: id}, success);
+
+    function success(result) {
+        if (result.errorMsg) {
+            console.log(result.errorMsg);
+        } else if (result.success) {
+            console.log(result.success);
+        }
+        getAllData();
+    }
+}
+
+/**
+ * 选择框选择监听
+ */
+function checkboxListener() {
+    $('.ui.toggle.checkbox').checkbox({
+        onChecked: function () {
+            let id = $(this).val();
+            statusChange(id);
+        },
+        onUnchecked: function () {
+            let id = $(this).val();
+            statusChange(id);
+        }
+    });
+}

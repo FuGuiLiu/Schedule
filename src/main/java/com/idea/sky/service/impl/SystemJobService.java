@@ -25,4 +25,6 @@ public interface SystemJobService{
      * @return
      */
     List<SystemJob> queryAllSystemJob();
+    /*查询已经激活的任务*/
+    List<SystemJob> queryActivedJob();
 }

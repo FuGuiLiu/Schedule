@@ -1,5 +1,6 @@
 package com.idea.sky.component;
 
+import com.idea.sky.utils.CronTaskRegistrar;
 import com.idea.sky.utils.SpringContextUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -19,6 +20,8 @@ public class SchedulingRunnable implements Runnable {
 
 	private final String params;
 
+	private CronTaskRegistrar cronTaskRegistrar;
+
 	public SchedulingRunnable(String beanName, String methodName) {
 		this(beanName, methodName, null);
 	}
@@ -29,9 +32,16 @@ public class SchedulingRunnable implements Runnable {
 		this.params = params;
 	}
 
+	public SchedulingRunnable(String beanName, String methodName, String params, CronTaskRegistrar cronTaskRegistrar) {
+		this.beanName = beanName;
+		this.methodName = methodName;
+		this.params = params;
+		this.cronTaskRegistrar = cronTaskRegistrar;
+	}
+
 	@Override
 	public void run() {
-		logger.error("定时任务开始执行 - bean：{}，方法：{}，参数：{}", beanName, methodName, params);
+		logger.error("定时任务开始执行 - bean:{},方法:{},参数:{}", beanName, methodName, params);
 		long startTime = System.currentTimeMillis();
 
 		try {
@@ -51,11 +61,14 @@ public class SchedulingRunnable implements Runnable {
 				method.invoke(target);
 			}
 		} catch (Exception ex) {
-			logger.error(String.format("定时任务执行异常 - bean：%s，方法：%s，参数：%s ", beanName, methodName, params), ex);
+			logger.error(String.format("定时任务执行异常 - bean:%s,方法:%s,参数:%s ", beanName, methodName, params), ex);
+			logger.error("发生异常,自动停止任务 killed this task" + beanName);
+			cronTaskRegistrar.removeCronTask(this);
+			// TODO: 2021/10/26 记录异常记录到日志表
 		}
 
 		long times = System.currentTimeMillis() - startTime;
-		logger.error("定时任务执行结束 - bean：{}，方法：{}，参数：{}，耗时：{} 毫秒", beanName, methodName, params, times);
+		logger.error("定时任务执行结束 - bean:{},方法:{},参数:{},耗时:{} 毫秒", beanName, methodName, params, times);
 	}
 
 	@Override

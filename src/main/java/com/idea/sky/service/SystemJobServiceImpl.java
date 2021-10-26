@@ -48,4 +48,9 @@ public class SystemJobServiceImpl implements SystemJobService {
 	public List<SystemJob> queryAllSystemJob() {
 		return systemJobDAO.queryAllSystemJob();
 	}
+
+	@Override
+	public List<SystemJob> queryActivedJob() {
+		return systemJobDAO.queryActivedJob();
+	}
 }
