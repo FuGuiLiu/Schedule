@@ -8,10 +8,10 @@ warn： 有些信息不是错误信息，但是也要给程序员的一些提示
 error： 错误信息。用的也比较多。
 fatal： 级别比较高了。重大错误，这种级别你可以直接停止程序了，是不应该出现的错误么！不用那么紧张，其实就是一个程度的问题。
  -->
-<Configuration status="OFF">
+<Configuration status="DEBUG">
     <!-- 定义日志存放目录 -->
     <Properties>
-        <Property name="logPath">D:\IdeaWorkSpace\logs</Property>
+        <Property name="logPath">F:\MrLiu\IDEAWorkSpace\Schedule\logs</Property>
         <!-- 输出日志的格式 -->
         <!--
                 %d{yyyy-MM-dd HH:mm:ss, SSS} : 日志生产时间
@@ -31,7 +31,7 @@ fatal： 级别比较高了。重大错误，这种级别你可以直接停止�
         <!--输出到控制台 -->
         <Console name="ConsoleLog" target="SYSTEM_OUT">
             <!--只输出level及以上级别的信息（onMatch），其他的直接拒绝（onMismatch） -->
-            <ThresholdFilter level="info" onMatch="ACCEPT" onMismatch="DENY" />
+            <ThresholdFilter level="debug" onMatch="ACCEPT" onMismatch="DENY" />
             <!--输出日志的格式，引用自定义模板 PATTERN -->
             <PatternLayout pattern="${PATTERN}" />
 

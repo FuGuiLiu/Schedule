@@ -1,10 +1,10 @@
 server:
-  port: 9090
+  port: 9091
 spring:
   datasource:
     username: root
-    password: 543210
-    url: jdbc:mysql://IP:Port/表名?serverTimezone=UTC&useUnicode=true&characterEncoding=utf-8&useSSL=false
+    password: 123456hexo
+    url: jdbc:mysql://74.211.98.200:3306/schedule?serverTimezone=UTC&useUnicode=true&characterEncoding=utf-8&useSSL=false
     driver-class-name: com.mysql.cj.jdbc.Driver
     type: com.alibaba.druid.pool.DruidDataSource
     # 下面为连接池的补充设置，应用到上面所有数据源中
@@ -18,7 +18,7 @@ spring:
     time-between-eviction-runs-millis: 60000
     # 配置一个连接在池中最小生存的时间，单位是毫秒
     min-evictable-idle-time-millis: 300000
-    validation-query: SELECT 1 FROM DUAL
+    validation-query: SELECT 1.html FROM DUAL
     test-while-idle: true
     test-on-borrow: false
     test-on-return: false
@@ -50,3 +50,13 @@ mybatis:
   config-location: classpath:mybatis/mybatis-config.xml
 logging:
   config: classpath:resources/log4j2/log4j2.xml
+task:
+  pool:
+    # 核心线程池大小
+    core-pool-size: 10
+    # 最大线程数
+    max-pool-size: 30
+    # 活跃时间
+    keep-alive-seconds: 60
+    # 队列容量
+    queue-capacity: 50
